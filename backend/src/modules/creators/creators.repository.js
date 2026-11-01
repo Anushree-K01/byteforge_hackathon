@@ -3,7 +3,7 @@ import { Errors } from '../../shared/errors/AppError.js';
 
 export async function findProfile(supabase, userId) {
   const { data, error } = await supabase.from('profiles').select('*').eq('id', userId).maybeSingle();
-  throwIfDbError(error);
+  throwIfDbError(error, 'Database request failed', { operation: 'select_profile', table: 'profiles' });
   return data;
 }
 

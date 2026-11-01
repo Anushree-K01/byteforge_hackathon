@@ -12,7 +12,10 @@ export async function listDeliverables(supabase, userId, query) {
   if (query.collaboration_id) request = request.eq('collaboration_id', query.collaboration_id);
   if (query.status) request = request.eq('status', query.status);
   const { data, error, count } = await request;
-  throwIfDbError(error);
+  throwIfDbError(error, 'Database request failed', {
+    operation: 'select_dashboard_deliverables',
+    table: 'deliverables',
+  });
   return paginated(data || [], count, page);
 }
 

@@ -18,7 +18,7 @@ export async function listContent(supabase, userId, query) {
     request = request.gte('scheduled_date', start).lte('scheduled_date', endDate);
   }
   const { data, error, count } = await request;
-  throwIfDbError(error);
+  throwIfDbError(error, 'Database request failed', { operation: 'select_dashboard_content', table: 'content_items' });
   return paginated(data || [], count, page);
 }
 

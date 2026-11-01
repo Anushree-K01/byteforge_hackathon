@@ -115,12 +115,15 @@ export async function deleteTransaction(supabase, userId, id) {
 
 export async function listAllTransactions(supabase, userId) {
   const { data, error } = await supabase.from('transactions').select('*').eq('user_id', userId);
-  throwIfDbError(error);
+  throwIfDbError(error, 'Database request failed', {
+    operation: 'select_all_user_transactions',
+    table: 'transactions',
+  });
   return data || [];
 }
 
 export async function listAllInvoices(supabase, userId) {
   const { data, error } = await supabase.from('invoices').select('*').eq('user_id', userId);
-  throwIfDbError(error);
+  throwIfDbError(error, 'Database request failed', { operation: 'select_all_user_invoices', table: 'invoices' });
   return data || [];
 }
