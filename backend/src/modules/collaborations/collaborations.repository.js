@@ -18,7 +18,7 @@ export async function listCollaborations(supabase, userId, query) {
 
   const { data, error, count } = await request;
   throwIfDbError(error, 'Database request failed', {
-    operation: 'select_dashboard_collaborations',
+    operation: 'select_collaborations',
     table: 'collaborations',
   });
   return paginated(data || [], count, page);

@@ -9,8 +9,14 @@ function sanitizedDiagnostic(error, context) {
     .replace(/https?:\/\/\S+/gi, '[redacted-url]')
     .replace(/\bBearer\s+\S+/gi, 'Bearer [redacted]')
     .replace(/\beyJ[A-Za-z0-9_-]*\.[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+\b/g, '[redacted-token]')
+    .replace(/\bsb_(?:publishable|secret)_[A-Za-z0-9_-]+\b/g, '[redacted-key]')
     .replace(/\b[\w.+-]+@[\w.-]+\.[A-Za-z]{2,}\b/g, '[redacted-email]')
     .replace(/\b[0-9a-f]{8}-[0-9a-f-]{27,}\b/gi, '[redacted-id]')
+    .replace(/(['"])(.*?)\1/g, (match, quote, value) =>
+      /^[a-z_][a-z0-9_.]*$/i.test(value) ? match : '[redacted-value]',
+    )
+    .replace(/[$€£₹]\s*\d[\d,.]*/g, '[redacted-amount]')
+    .replace(/\b\d+\.\d{2,}\b/g, '[redacted-amount]')
     .replace(/[\r\n\t]+/g, ' ')
     .slice(0, 240);
   const operation =

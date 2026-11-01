@@ -18,7 +18,7 @@ describe('database error diagnostics', () => {
         throwIfDbError(
           {
             code: '42P01',
-            message: `relation missing for creator@example.com ${sensitiveToken} https://demo.example.test/rest/v1`,
+            message: `relation "profiles" missing for creator@example.com ${sensitiveToken} https://demo.example.test/rest/v1 amount '12345.67'`,
             status: 404,
           },
           'Database request failed',
@@ -39,6 +39,8 @@ describe('database error diagnostics', () => {
       expect(logger.mock.calls[0][1]).not.toContain('creator@example.com');
       expect(logger.mock.calls[0][1]).not.toContain(sensitiveToken);
       expect(logger.mock.calls[0][1]).not.toContain('demo.example.test');
+      expect(logger.mock.calls[0][1]).not.toContain('12345.67');
+      expect(logger.mock.calls[0][1]).toContain('"profiles"');
     } finally {
       env.NODE_ENV = previousNodeEnv;
     }
